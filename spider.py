@@ -142,7 +142,7 @@ def main(official_accounts, using_proxies = True, filename=None, wait_time=5):
 
 if __name__ == '__main__':
     # 目标公众号
-    official_accounts = ['金鹿公务', '神秘的程序员们','小道消息','微软科技','Linux学习','TechWeb','果壳网','每日豆瓣']
+    official_accounts = []
     
     # 使用代理ip
     main(official_accounts)
