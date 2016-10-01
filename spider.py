@@ -41,12 +41,14 @@ def run(oa, begin, end, using_proxies, wait_time):
     
     if using_proxies:
         ip = next(proxies)
-    
-    stop = False
+    else:
+        stop = False # 用于决定对当前公众号的搜索是否停止
+        
     logging.info('%s 将从第%s页到第%s页：' % (oa, begin, end-1))
     for i in range(begin, end):
         logging.info('%s 第%s页 开始' % (oa, i))
-        page_finish = False
+        
+        page_finish = False # 用于标识当前目标页是否完成检测
         while not page_finish:
             try:
                 r = requests.get(
@@ -70,18 +72,18 @@ def run(oa, begin, end, using_proxies, wait_time):
                     raise Exception
                 # 如果结果不为0
                 else:
-                    # 在所有搜索结果中找到正确的搜索结果，并输出和存储文章链接
+                    # 在所有搜索结果中找到正确的搜索结果，解析文章链接并将解析结果存入info.csv，同时存储文章链接作为备份
                     with open('articles_urls.txt', 'a', encoding='utf-8') as f:
                         f.write('%s - %s：\n' % (oa, i))
                         for result in results_list:
                             if result.find_all(title=oa):
-                                logging.info('%s-%s 正在存储URL...' % (oa, i))
                                 article_url = result.h4.a['href']
-                                f.write(article_url + '\n')
                                 
-                                logging.info('%s-%s 正在解析文章内容...' % (oa, i))
+                                logging.info('%s-%s 正在解析文章内容，并将结果写入info.csv...' % (oa, i))
                                 info.get_info(article_url)
                                 
+                                logging.info('%s-%s 正在备份URL...' % (oa, i))
+                                f.write(article_url + '\n')
                                 
                     # 完成当前页后，将当前页URL作为Referer，并找到“下一页”的URL作为下次的搜索URL。
                     headers['Referer'] = search_url
@@ -95,8 +97,8 @@ def run(oa, begin, end, using_proxies, wait_time):
                             stop = True
                             
                     page_finish = True
-                    s_change = 0
                     logging.info('%s 第%s页 结束' % (oa, i))
+                    
                     second = random.choice([2,3,4,5])
                     logging.info('%s-%s 策略性暂停%s秒' % (oa, i, second))
                     time.sleep(second)
@@ -122,7 +124,7 @@ def run(oa, begin, end, using_proxies, wait_time):
                     # 不重连，而是直接停止
                     #stop = True
                     #break
-        if stop:
+        if not using_proxies and stop:
             logging.info('%s 自动停止！' % oa)
             break
             
