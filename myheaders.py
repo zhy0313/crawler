@@ -2,6 +2,9 @@
 
 import random
 
+# 加入从浏览器找到的cookies
+cookies = ''
+
 common_headers = {
     'Host': 'weixin.sogou.com',
     'Connection': 'keep-alive',
@@ -10,8 +13,7 @@ common_headers = {
     'Referer': 'http://weixin.sogou.com/',
     'Accept-Encoding': 'gzip, deflate, sdch',
     'Accept-Language': 'zh-CN,zh;q=0.8',
-    # 加入从浏览器找到的cookies
-    'Cookie': ''
+    'Cookie': cookies
     }
 
 uas = [

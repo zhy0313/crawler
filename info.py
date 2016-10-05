@@ -48,7 +48,7 @@ def get_info(url):
         read = read_like.json()['read_num']
         # 点赞数
         like = read_like.json()['like_num']
-   
+
     results = [account,user,date,title,read,like,article]
     for i in imgs:
         results.append(i)

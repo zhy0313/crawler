@@ -47,6 +47,6 @@ def get_proxies(index=2, begin=1, end=11):
     with open('proxies.txt', 'w', encoding='utf-8') as f:
         for i in range(0,len(ips),2):
             f.write(ips[i]+ips[i+1])
-                
+
 if __name__ == '__main__':
     get_proxies()
